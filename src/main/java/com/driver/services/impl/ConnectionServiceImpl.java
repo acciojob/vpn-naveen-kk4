@@ -53,6 +53,7 @@ public class ConnectionServiceImpl implements ConnectionService {
         user.getConnectionList().add(connection);
         serviceProvider.getConnectionList().add(connection);
         userRepository2.save(user);
+        serviceProviderRepository2.save(serviceProvider);
         return user;
 
 
@@ -60,9 +61,10 @@ public class ConnectionServiceImpl implements ConnectionService {
     @Override
     public User disconnect(int userId) throws Exception {
            User user = userRepository2.findById(userId).get();
-           if(!user.getConnected())throw new Exception("Already disconnected");
+        List<Connection> connectionList = user.getConnectionList();
+           if(connectionList.size()==0)throw new Exception("Already disconnected");
            user.setConnected(Boolean.FALSE);
-           List<Connection> connectionList = user.getConnectionList();
+
            Connection connection =  connectionList.get(0);
            connectionRepository2.delete(connection);
            user.setMaskedIp(null);
