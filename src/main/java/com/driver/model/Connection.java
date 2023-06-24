@@ -4,32 +4,19 @@ import javax.persistence.*;
 
 @Table
 @Entity
-public class Country{
+public class Connection {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private CountryName countryName;
-    private String code;
-
-    public Country() {
-    }
     @ManyToOne
     @JoinColumn
     private ServiceProvider serviceProvider;
-    @OneToOne
+    @ManyToOne
     @JoinColumn
     private User user;
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public void setCountryName(CountryName countryName) {
-        this.countryName = countryName;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
     }
 
     public void setServiceProvider(ServiceProvider serviceProvider) {
@@ -42,14 +29,6 @@ public class Country{
 
     public int getId() {
         return id;
-    }
-
-    public CountryName getCountryName() {
-        return countryName;
-    }
-
-    public String getCode() {
-        return code;
     }
 
     public ServiceProvider getServiceProvider() {
