@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class ConnectionServiceImpl implements ConnectionService {
@@ -21,14 +22,58 @@ public class ConnectionServiceImpl implements ConnectionService {
 
     @Override
     public User connect(int userId, String countryName) throws Exception{
-            return null;
+            User user = userRepository2.findById(userId).get();
+            if(user.getConnected())throw new Exception("Already connected");
+            Country ogCountry = user.getOriginalCountry();
+            if(ogCountry.equals(countryName))return user;
+
+        List<ServiceProvider> serviceProviderList = user.getServiceProviderList();
+        ServiceProvider serviceProvider = null;
+        Country country = null;
+        for(ServiceProvider serviceProvider1 : serviceProviderList){
+            boolean flag = false;
+            for(Country country1:serviceProvider1.getCountryList()){
+                if(country1.getCountryName().equals(countryName)){
+                    flag = true;
+                    serviceProvider=serviceProvider1;
+                    country=country1;
+                    break;
+                }
+            }
+            if(flag)break;
+        }
+        if(Objects.isNull(serviceProvider))throw new Exception("Unable to connect");
+        user.setConnected(Boolean.TRUE);
+        user.setMaskedIp(country.getCode()+"."+serviceProvider.getId()+"."+userId);
+        Connection connection = new Connection();
+        connection.setUser(user);
+        connection.setServiceProvider(serviceProvider);
+        connection = connectionRepository2.save(connection);
+        user.getConnectionList().add(connection);
+        serviceProvider.getConnectionList().add(connection);
+        userRepository2.save(user);
+        return user;
+
+
     }
     @Override
     public User disconnect(int userId) throws Exception {
-           return null;
+           User user = userRepository2.findById(userId).get();
+           if(!user.getConnected())throw new Exception("Already disconnected");
+           user.setConnected(Boolean.FALSE);
+           List<Connection> connectionList = user.getConnectionList();
+           Connection connection =  connectionList.get(0);
+           connectionRepository2.delete(connection);
+           user.setMaskedIp(null);
+           userRepository2.save(user);
+           return user;
+
+
     }
     @Override
     public User communicate(int senderId, int receiverId) throws Exception {
-           return null;
+          User sender = userRepository2.findById(senderId).get();
+          User receiver = userRepository2.findById(receiverId).get();
+          return null;
     }
 }
