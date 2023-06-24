@@ -31,8 +31,9 @@ public class ConnectionServiceImpl implements ConnectionService {
         List<ServiceProvider> serviceProviderList = user.getServiceProviderList();
         ServiceProvider serviceProvider = null;
         Country country = null;
+        boolean flag = false;
         for(ServiceProvider serviceProvider1 : serviceProviderList){
-            boolean flag = false;
+
             for(Country country1:serviceProvider1.getCountryList()){
                 if(country1.getCountryName().toString().equals(countryName)){
                     flag = true;
@@ -43,7 +44,7 @@ public class ConnectionServiceImpl implements ConnectionService {
             }
             if(flag)break;
         }
-        if(Objects.isNull(serviceProvider))throw new Exception("Unable to connect");
+        if(!flag)throw new Exception("Unable to connect");
         user.setConnected(Boolean.TRUE);
         user.setMaskedIp(country.getCode()+"."+serviceProvider.getId()+"."+userId);
         Connection connection = new Connection();
