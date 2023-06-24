@@ -13,8 +13,8 @@ public class User {
     private int id;
     private String username;
     private String password;
-    private String maskedIP;
-    private String originalIP;
+    private String maskedIp;
+    private String originalIp;
 
     private Boolean connected;
     @ManyToMany(mappedBy = "users",cascade = CascadeType.ALL)
@@ -38,11 +38,11 @@ public class User {
     }
 
     public void setMaskedIp(String maskedIP) {
-        this.maskedIP = maskedIP;
+        this.maskedIp = maskedIP;
     }
 
     public void setOriginalIp(String originalIP) {
-        this.originalIP = originalIP;
+        this.originalIp = originalIP;
     }
 
     public void setConnected(Boolean connected) {
@@ -74,11 +74,11 @@ public class User {
     }
 
     public String getMaskedIp() {
-        return maskedIP;
+        return maskedIp;
     }
 
     public String getOriginalIp() {
-        return originalIP;
+        return originalIp;
     }
 
     public Boolean getConnected() {
