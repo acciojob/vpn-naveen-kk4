@@ -22,10 +22,11 @@ public class ConnectionServiceImpl implements ConnectionService {
 
     @Override
     public User connect(int userId, String countryName) throws Exception{
+        countryName = countryName.toUpperCase();
             User user = userRepository2.findById(userId).get();
             if(user.getConnected())throw new Exception("Already connected");
             Country ogCountry = user.getOriginalCountry();
-            if(ogCountry.equals(countryName))return user;
+            if(ogCountry.toString().equals(countryName))return user;
 
         List<ServiceProvider> serviceProviderList = user.getServiceProviderList();
         ServiceProvider serviceProvider = null;
@@ -33,7 +34,7 @@ public class ConnectionServiceImpl implements ConnectionService {
         for(ServiceProvider serviceProvider1 : serviceProviderList){
             boolean flag = false;
             for(Country country1:serviceProvider1.getCountryList()){
-                if(country1.getCountryName().equals(countryName)){
+                if(country1.getCountryName().toString().equals(countryName)){
                     flag = true;
                     serviceProvider=serviceProvider1;
                     country=country1;
@@ -74,6 +75,27 @@ public class ConnectionServiceImpl implements ConnectionService {
     public User communicate(int senderId, int receiverId) throws Exception {
           User sender = userRepository2.findById(senderId).get();
           User receiver = userRepository2.findById(receiverId).get();
-          return null;
+          String senderCountryCode = sender.getOriginalCountry().getCode();
+          String receiverCountryCode;
+
+          if(!receiver.getConnected()){receiverCountryCode=receiver.getOriginalCountry().getCode();}
+          else{
+              receiverCountryCode = receiver.getMaskedIp().substring(0,3);
+          }
+          if(senderCountryCode.equals(receiverCountryCode))return sender;
+          else{
+              String countryName = "";
+              switch(receiverCountryCode){
+                  case "001":countryName="IND";break;
+                  case "002":countryName="USA";break;
+                  case "003":countryName="AUS";break;
+                  case "004":countryName="CHI";break;
+                  case "005":countryName="JPN";break;
+              }
+              return this.connect(senderId,countryName);
+
+          }
+
+
     }
 }
