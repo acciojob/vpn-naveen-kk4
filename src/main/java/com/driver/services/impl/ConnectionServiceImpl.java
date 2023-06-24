@@ -94,7 +94,13 @@ public class ConnectionServiceImpl implements ConnectionService {
                   case "004":countryName="CHI";break;
                   case "005":countryName="JPN";break;
               }
-              return this.connect(senderId,countryName);
+              try {
+                  return this.connect(senderId, countryName);
+              }
+              catch (Exception e){
+                  throw new Exception("Cannot establish communication");
+
+              }
 
           }
 
