@@ -37,11 +37,11 @@ public class User {
         this.password = password;
     }
 
-    public void setMaskedIP(String maskedIP) {
+    public void setMaskedIp(String maskedIP) {
         this.maskedIP = maskedIP;
     }
 
-    public void setOriginalIP(String originalIP) {
+    public void setOriginalIp(String originalIP) {
         this.originalIP = originalIP;
     }
 
@@ -57,7 +57,7 @@ public class User {
         this.connectionList = connectionList;
     }
 
-    public void setCountry(Country country) {
+    public void setOriginalCountry(Country country) {
         this.country = country;
     }
 
@@ -73,11 +73,11 @@ public class User {
         return password;
     }
 
-    public String getMaskedIP() {
+    public String getMaskedIp() {
         return maskedIP;
     }
 
-    public String getOriginalIP() {
+    public String getOriginalIp() {
         return originalIP;
     }
 
@@ -93,7 +93,7 @@ public class User {
         return connectionList;
     }
 
-    public Country getCountry() {
+    public Country getOriginalCountry() {
         return country;
     }
 }

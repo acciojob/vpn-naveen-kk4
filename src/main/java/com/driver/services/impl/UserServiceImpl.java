@@ -45,11 +45,11 @@ public class UserServiceImpl implements UserService {
 
         user.setUsername(username);
         user.setConnected(Boolean.FALSE);
-        user.setMaskedIP(null);
+        user.setMaskedIp(null);
         user = userRepository3.save(user);
         String ogId = country.getCode()+user.getId();
-        user.setOriginalIP(ogId);
-        user.setCountry(country);
+        user.setOriginalIp(ogId);
+        user.setOriginalCountry(country);
         country.setUser(user);
         userRepository3.save(user);
         return user;
@@ -59,7 +59,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User subscribe(Integer userId, Integer serviceProviderId) {
         User user = userRepository3.findById(userId).get();
-        Country country = user.getCountry();
+        Country country = user.getOriginalCountry();
         ServiceProvider serviceProvider = serviceProviderRepository3.findById(serviceProviderId).get();
 
         serviceProvider.getCountryList().add(country);
