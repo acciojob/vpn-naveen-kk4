@@ -40,6 +40,7 @@ public class UserServiceImpl implements UserService {
                 break;
 
         }
+        country.setCode(country.getCountryName().toCode());
         User user = new User();
         user.setPassword(password);
 
@@ -47,7 +48,7 @@ public class UserServiceImpl implements UserService {
         user.setConnected(Boolean.FALSE);
         user.setMaskedIp(null);
         user = userRepository3.save(user);
-        String ogId = country.getCode()+user.getId();
+        String ogId = country.getCode()+"."+user.getId();
         user.setOriginalIp(ogId);
         user.setOriginalCountry(country);
         country.setUser(user);
