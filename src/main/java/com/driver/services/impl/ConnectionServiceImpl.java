@@ -47,11 +47,10 @@ public class ConnectionServiceImpl implements ConnectionService {
         if(Objects.isNull(serviceProvider))throw new Exception("Unable to connect");
         user.setConnected(Boolean.TRUE);
         user.setMaskedIp(countryCode+"."+serviceProvider.getId()+"."+userId);
-        user = userRepository2.save(user);
         Connection connection = new Connection();
         connection.setUser(user);
         connection.setServiceProvider(serviceProvider);
-        connection = connectionRepository2.save(connection);
+       // connection = connectionRepository2.save(connection);
         user.getConnectionList().add(connection);
         serviceProvider.getConnectionList().add(connection);
         userRepository2.save(user);
